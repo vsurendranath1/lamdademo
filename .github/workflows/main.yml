@@ -1,0 +1,26 @@
+name: Deploy Lambda Function
+
+on:
+  push:
+    branches:
+      - main  # Trigger when you push to the 'main' branch
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up AWS CLI
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+
+      - name: Deploy Lambda function
+        run: |
+          zip -r function.zip .
+          aws lambda update-function-code --function-name your_lambda_function_name --zip-file fileb://function.zip
