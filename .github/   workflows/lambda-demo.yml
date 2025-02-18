@@ -1,15 +1,16 @@
-name:  Lambda demo Function
+name: Deploy Lambda Function
 
 on:
   push:
     branches:
-      - main  # Trigger the deployment on push to the main branch
+      - main  # Trigger when you push to the 'main' branch
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    
     steps:
-      - name: Checkout code
+      - name: Checkout repository
         uses: actions/checkout@v2
 
       - name: Set up AWS CLI
@@ -17,16 +18,9 @@ jobs:
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: us-east-1  # Choose the region where Lambda is created
-
-      - name: Install dependencies (if any)
-        run: |
-          python -m pip install --upgrade pip
-          pip install -r requirements.txt  # Add any dependencies here
+          aws-region: us-east-1
 
       - name: Deploy Lambda function
         run: |
-          zip -r lambda_function.zip .  # Create a zip of your Lambda code
-          aws lambda update-function-code \
-            --function-name processS3File \
-            --zip-file fileb://lambda_function.zip
+          zip -r function.zip .
+          aws lambda update-function-code --function-name your_lambda_function_name --zip-file fileb://function.zip
