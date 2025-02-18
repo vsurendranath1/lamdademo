@@ -23,4 +23,4 @@ jobs:
       - name: Deploy Lambda function
         run: |
           zip -r function.zip .
-          aws lambda update-function-code --function-name your_lambda_function_name --zip-file fileb://function.zip
+          aws lambda update-function-code --function-name processs3file --zip-file fileb://function.zip
